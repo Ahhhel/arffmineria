@@ -1,0 +1,7 @@
+@relation 'Servo Data'
+
+@attribute motor {A,B,C,D,E}
+@attribute screw {A,B,C,D,E}
+@attribute pgain {3,4,5,6}
+@attribute vgain {1,2,3,4,5}
+@attribute class NUMERIC
