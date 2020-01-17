@@ -1,3 +1,4 @@
+import re
 # names=open("shuttle-landing-control.names","tr")
 names=open("servo.names","tr")
 
@@ -44,6 +45,18 @@ for atributo in atributos:
     
 
 
+#lectura de datos
+
+archivoDatos =  open("servo.data","tr")
+
+datos = archivoDatos.readlines()
+
+coleccionDatos = {}
+g=0
+for dato in datos:
+    g+=1
+    coleccionDatos[g] = re.split(",| |\n",dato)
+
 
 
 
@@ -57,6 +70,14 @@ archivoarff = open(nombreRelacion+".arff","w")
 archivoarff.write(inicio)
 for l in listaAtributos:
     archivoarff.write(listaAtributos[l])
+    archivoarff.write("\n")
+archivoarff.write("\n@data\n")
+for l in coleccionDatos:
+    for h in coleccionDatos[l]:
+        if(h != ""):
+            archivoarff.write(h+", ")
+    pos=archivoarff.tell()
+    archivoarff.seek(pos-2)
     archivoarff.write("\n")
 archivoarff.close()
     
