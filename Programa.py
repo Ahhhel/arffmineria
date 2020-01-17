@@ -1,7 +1,25 @@
 import re
+from  tkinter import *
+from tkinter import filedialog
+import os
+cwd = os.getcwd()#se detecta el directorio actual
+
+#se preguntan por los archivos
+root = Tk()
+filename = ""
+root.filename =  filedialog.askopenfilename(initialdir = cwd, title = "Archivo .names",filetypes = (("names files","*.names"),("all files","*.*")))
+root.withdraw()
+aname=root.filename
+root = Tk()
+filename = ""
+root.filename =  filedialog.askopenfilename(initialdir = cwd, title = "Archivo .data",filetypes = (("data files","*.data"),("all files","*.*")))
+root.withdraw()
+adata=root.filename
+
 #se abren los archivos .name y .data
-names=open("servo.names","tr")
-archivoDatos =  open("servo.data","tr")
+names=open(aname,"tr")
+archivoDatos =  open(adata,"tr")
+
 
 #se leen todas las lineas de los archivos
 lineas=names.readlines()
