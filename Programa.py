@@ -1,25 +1,28 @@
 import re
-# names=open("shuttle-landing-control.names","tr")
+#se abren los archivos .name y .data
 names=open("servo.names","tr")
+archivoDatos =  open("servo.data","tr")
 
+#se leen todas las lineas de los archivos
 lineas=names.readlines()
+datos = archivoDatos.readlines()
 
-l1=lineas[0].split(": ")
+#se detecta el nombre de la relacion
+l1=lineas[0].split(": ") #se devide la primera linea del archivo para aislar el titulo
 nombreRelacion = l1[1]
 nombreRelacion =  nombreRelacion[:-1]
+inicio= "@relation '"+ nombreRelacion+"'\n\n"
 
-
-numAtributos = 0
-for i in lineas:
+#se detectan los atributos
+numAtributos = 0 #variable del numero de lineas que se recorren para encontrar los atributos
+for i in lineas: #ciclo busca los atributos
     numAtributos+=1
     if (i[0] == "7"):
         break
 
-
-k=0
-
-atributos = {}
-
+#extracción de los atributos
+atributos = {} #arreglo que almacenará los atributos sin formato
+k=0 #contador
 while True:
     if (lineas[numAtributos][0] == "8"):
         break
@@ -27,12 +30,8 @@ while True:
         k+=1
         atributos[k]=lineas[numAtributos].split(": ")
     numAtributos+=1
-
-
-listaAtributos = {}
-
+listaAtributos = {} #arreglo de arreglos que almacenará los atributos con formato
 j=0
-
 for atributo in atributos:
     j+=1
     nombre= atributos[atributo][0].split(". ")
@@ -42,36 +41,25 @@ for atributo in atributos:
         listaAtributos[j]="@attribute "+nombre[1]+" NUMERIC"
     else:
         listaAtributos[j]="@attribute "+nombre[1]+" {"+detalles+"}"
-    
-
-
-#lectura de datos
-
-archivoDatos =  open("servo.data","tr")
-
-datos = archivoDatos.readlines()
-
+        
+#detección de los datos
 coleccionDatos = {}
 g=0
 for dato in datos:
     g+=1
     coleccionDatos[g] = re.split(",| |\n",dato)
 
-
-
-
-inicio= "@relation '"+ nombreRelacion+"'\n\n"
-
-for l in listaAtributos:
-    print(listaAtributos[l])
-
+#se crea el archivo arff
 archivoarff = open(nombreRelacion+".arff","w")
-
+#se escribe el encabezado
 archivoarff.write(inicio)
+#se escriben los atributos
 for l in listaAtributos:
     archivoarff.write(listaAtributos[l])
     archivoarff.write("\n")
+#se escribe el encabezado de los datos
 archivoarff.write("\n@data\n")
+#se escriben los datos
 for l in coleccionDatos:
     for h in coleccionDatos[l]:
         if(h != ""):
@@ -79,6 +67,8 @@ for l in coleccionDatos:
     pos=archivoarff.tell()
     archivoarff.seek(pos-2)
     archivoarff.write("\n")
+
+#cierre de los dos archivos
 archivoarff.close()
-    
 names.close()
+############FIN DEL PROGRAMA##############
